@@ -1,4 +1,5 @@
 import unicodedata
+import unidecode
 import string
 import numpy as np
 from slugify import slugify
@@ -12,7 +13,7 @@ bidirectional = {8: ['L'],
                  }
 
 
-def convert(char):
+def convert(char, first):
     # letter, mark, number, punctuation, symbol, separator, or other.
     # https://www.fileformat.info/info/unicode/category/index.htm
     category = unicodedata.category(char)
@@ -66,20 +67,25 @@ def convert(char):
         ind = (ord(char) * 100003) % 69 + 59
         data[ind] = 1
 
-    # TODO 58 : first from transliteration
+    if first:
+        data[58] = 1
 
     return data
 
 
-test_str = "this Is, test! даè"
+test_str = "this Is, test! даè東"
 values = None
 print(values)
-for ch in unicodedata.normalize("NFKC", test_str):
-    val = first(ch)
-    if values is None:
-        values = np.array([val])
-    else:
-        values = np.append(values, [val], axis=0)
+for norm_char in unicodedata.normalize("NFKC", test_str):
+    chars = unidecode.unidecode(norm_char)
+    first = True
+    for ch in chars:
+        val = convert(ch, first)
+        first = False
+        if values is None:
+            values = np.array([val])
+        else:
+            values = np.append(values, [val], axis=0)
     # print(first(ch))
 print(values)
 print(values.shape)
