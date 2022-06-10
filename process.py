@@ -1,4 +1,5 @@
 import os
+import argparse
 
 from convert import Converter
 from model import Model
@@ -6,11 +7,8 @@ from generator import DataGenerator
 
 
 class Processor:
-    def __init__(self, size):
-        self.base_dir = "C:\\Users\\adanilov\\PycharmProjects\\clcnn"
-        # self.base_dir = os.curdir
-        self.x = []  # FIXME move local to process ?
-        self.y = []
+    def __init__(self, size, base_dir):
+        self.base_dir = base_dir
         self.converter = Converter(size)
         self.model = Model(size)
         self.model.build()
@@ -36,5 +34,11 @@ class Processor:
 
 
 if __name__ == "__main__":
-    Processor(128).process()
+    parser = argparse.ArgumentParser(prog='PROCESS')
+    parser.add_argument('-b', '--base_dir', help="Base dir where located 'data' folder", type=str, required=True,
+                        dest='base_dir')
+    parser.add_argument('-d', '--dimension', help="Dimensions", type=int, dest="dim", default=128)
+    result = parser.parse_args()
+
+    Processor(result.dim, result.base_dir).process()
     print("DONE")

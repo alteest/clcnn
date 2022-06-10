@@ -21,7 +21,7 @@ class Converter:
         # letter, mark, number, punctuation, symbol, separator, or other.
         # https://www.fileformat.info/info/unicode/category/index.htm
         category = unicodedata.category(char)
-        data = np.zeros(128, dtype=np.int8)
+        data = np.zeros(self.size, dtype=np.int8)
         if category:
             ind = categories.find(category[0])
             if ind > -1:
@@ -70,7 +70,8 @@ class Converter:
         if char in string.printable:
             data[57] = 1
         else:
-            ind = (ord(char) * 100003) % 69 + 59
+            # FIXME 59 is hardcoded for 128 size
+            ind = (ord(char) * 100003) % 69 + (self.size - 69)
             data[ind] = 1
 
         if first:

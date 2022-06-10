@@ -28,7 +28,6 @@ class DataGenerator(tf.keras.utils.Sequence):
 
     def __getitem__(self, index):
         X = []
-        # X2 = []
         y = []
         batches = self.df[index * self.batch_size:(index + 1) * self.batch_size]
         # print(f"Ask {index} from {self.df.shape} got batches {batches.shape}")
@@ -39,7 +38,6 @@ class DataGenerator(tf.keras.utils.Sequence):
             if raw is not None:
                 # print(raw.shape)
                 # print(f"Got '{text}' to {raw.shape}")
-                # X2.append(raw)
                 X.append(raw.tolist())
                 y.append((row["latitude"], row["longitude"]))
 
@@ -79,7 +77,7 @@ class DataGenerator(tf.keras.utils.Sequence):
                     next(reader)
                     for row in reader:
                         text = row[3]
-                        text = re.sub(r'https:\/\/t.co\/.{10}', "", text).strip()  # remove links
+                        text = re.sub(r'https://t.co/.{10}', "", text).strip()  # remove links
                         text = re.sub(r'@\w+', "", text).strip()  # remove mentions
                         text = re.sub(r"\s{2,}", " ", text).strip()
                         # print(text)
@@ -100,6 +98,6 @@ class DataGenerator(tf.keras.utils.Sequence):
 
 
 if __name__ == "__main__":
-    gdf = DataGenerator.get_data(128, "C:\\Users\\adanilov\\PycharmProjects\\clcnn")
+    gdf = DataGenerator.get_data(128, os.curdir)
     print(gdf.shape)
     print(gdf.head())

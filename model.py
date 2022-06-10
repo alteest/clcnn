@@ -3,17 +3,18 @@ from geopy import distance
 import tensorflow as tf
 
 
+# FIXME implement loss function
 def geo_distance(point1: tf.Tensor, point2: tf.Tensor):
-    print("POINT1:, ", point1)
-    print("POINT2:, ", point2)
-    print("POINT1:, ", point1.value_index)
-    print("POINT2:, ", point2.value_index)
-    print("P2 0", point2[:, 0])
-    print("P2 1", point2[:, 1])
-    print("WHERE:", tf.where(point1).numpy())
-    print("[]:", point1[:])
-    p1 = tf.get_static_value(point1)
-    print("P!:", p1)
+    # print("POINT1:, ", point1)
+    # print("POINT2:, ", point2)
+    # print("POINT1:, ", point1.value_index)
+    # print("POINT2:, ", point2.value_index)
+    # print("P2 0", point2[:, 0])
+    # print("P2 1", point2[:, 1])
+    # print("WHERE:", tf.where(point1).numpy())
+    # print("[]:", point1[:])
+    # p1 = tf.get_static_value(point1)
+    # print("P!:", p1)
     return distance.distance(point1, point2).km
 
 
@@ -44,7 +45,6 @@ class Model:
         # self.model.add(tf.keras.layers.Input(shape=(3, 280, 128)))
         self.model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=7, activation='relu', input_shape=(280, 128, 1)))
         self.model.add(tf.keras.layers.MaxPooling2D(pool_size=3))
-        """
         self.model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=7, activation='relu'))
         self.model.add(tf.keras.layers.MaxPooling2D(pool_size=3))
         self.model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, activation='relu'))
@@ -52,14 +52,11 @@ class Model:
         self.model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, activation='relu'))
         self.model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, activation='relu'))
         self.model.add(tf.keras.layers.MaxPooling2D(pool_size=3))
-        """
         self.model.add(tf.keras.layers.Flatten())
         self.model.add(tf.keras.layers.Dense(124, activation='relu'))
         self.model.add(tf.keras.layers.Dropout(0.5))  # FIXME is it required?
-        """
         self.model.add(tf.keras.layers.Dense(1024, activation='relu'))
         self.model.add(tf.keras.layers.Dropout(0.5))
-        """
         self.model.add(tf.keras.layers.Dense(2, activation='softmax'))
         self.model.compile(loss="mean_squared_error", optimizer='adam', metrics=['accuracy'])  # mean_squared_error
         # VonMisesFisher
