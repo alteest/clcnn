@@ -57,8 +57,9 @@ class Model:
         self.model.add(tf.keras.layers.Dropout(0.5))  # FIXME is it required?
         self.model.add(tf.keras.layers.Dense(1024, activation='relu'))
         self.model.add(tf.keras.layers.Dropout(0.5))
-        self.model.add(tf.keras.layers.Dense(2, activation='softmax'))
-        self.model.compile(loss="mean_squared_error", optimizer='adam', metrics=['accuracy'])  # mean_squared_error
+        self.model.add(tf.keras.layers.Dense(2, activation='linear'))  # linear??? softmax for LANG???
+        opt = tf.keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
+        self.model.compile(loss="mean_squared_error", optimizer=opt, metrics=['accuracy'])  # mean_squared_error
         # VonMisesFisher
         print(self.model.summary())
 

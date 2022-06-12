@@ -7,7 +7,7 @@ from generator import DataGenerator
 
 
 class Processor:
-    def __init__(self, size, base_dir):
+    def __init__(self, size: int, base_dir: str):
         self.base_dir = base_dir
         self.converter = Converter(size)
         self.model = Model(size)
@@ -17,11 +17,12 @@ class Processor:
 
         full = DataGenerator.get_data(128, self.base_dir)
         print("FULL :", full.shape)
+        print(full.head())
         if full is None:
             print("Error getting data")
             return
 
-        train = full.sample(frac=0.8, random_state=200)
+        train = full.sample(frac=0.9, random_state=42)
         test = full.drop(train.index)
         print("TRAIN :", train.shape)
         print("TEST :", test.shape)

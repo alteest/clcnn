@@ -61,7 +61,7 @@ class DataGenerator(tf.keras.utils.Sequence):
         df = pd.DataFrame({'text': pd.Series(dtype='str'),
                            'latitude': pd.Series(dtype='float'),
                            'longitude': pd.Series(dtype='float')})
-        i = 10
+        # i = 10
         data_dir = os.path.join(base_dir, "data")
         for fname in os.listdir(data_dir):
             if fname.endswith('.csv'):
@@ -77,22 +77,16 @@ class DataGenerator(tf.keras.utils.Sequence):
                     next(reader)
                     for row in reader:
                         text = row[3]
-                        text = re.sub(r'https://t.co/.{10}', "", text).strip()  # remove links
-                        text = re.sub(r'@\w+', "", text).strip()  # remove mentions
-                        text = re.sub(r"\s{2,}", " ", text).strip()
-                        # print(text)
-                        # print(text[-23:])
-                        if text[-23:].startswith("https://t.co/"):
-                            text = text[:-23].strip()
-                        if not text:
-                            continue
 
                         if converter.convert_text(text) is not None:
-                            df.loc[len(df.index)] = [text, latitude, longitude]
+                            df.loc[len(df.index)] = [text,
+                                                     converter.convert_geo(latitude, 90),
+                                                     converter.convert_geo(longitude, 180)
+                                                    ]
 
-                i -= 1
-                if i < 0:
-                    break
+                # i -= 1
+                # if i < 0:
+                #     break
 
         return df
 

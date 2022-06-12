@@ -1,3 +1,4 @@
+import re
 import unicodedata
 import unidecode
 import string
@@ -81,6 +82,14 @@ class Converter:
 
     def convert_text(self, text: str) -> [list, None]:
 
+        text = re.sub(r'https://t.co/.{10}', "", text).strip()  # remove links
+        text = re.sub(r'@\w+', "", text).strip()  # remove mentions
+        text = re.sub(r"\s{2,}", " ", text).strip()
+        # print(text)
+        # print(text[-23:])
+        if not text:
+            return None
+
         values = None
         for norm_char in unicodedata.normalize("NFKC", text):
             chars = unidecode.unidecode(norm_char)
@@ -104,6 +113,17 @@ class Converter:
         print(f"ERROR! Got None from '{text}'")
         return None
 
+    @staticmethod
+    def convert_geo(value: float, limit: int) -> float:
+        # -90 to 90 for latitude
+        # -180 to 180 for longitude
+        #
+        # Return value from 0 .. 1
+        return float(value) / (float(limit) * 2.0) + 0.5
+
+    @staticmethod
+    def convert_to_geo(value: float, limit: int):
+        return (value - 0.5) * 2.0 * float(limit)
 
 if __name__ == "__main__":
     converter = Converter(128)
