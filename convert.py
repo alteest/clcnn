@@ -16,7 +16,6 @@ bidirectional = {8: ['L'],
 
 class Converter:
     def __init__(self, size: int):
-        # Just for test
         self.size = size
 
     def convert_char(self, char: string, first: bool) -> np.ndarray:
