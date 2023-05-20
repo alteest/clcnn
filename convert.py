@@ -16,6 +16,7 @@ bidirectional = {8: ['L'],
 
 class Converter:
     def __init__(self, size: int):
+        # Just for test
         self.size = size
 
     def convert_char(self, char: string, first: bool) -> np.ndarray:
@@ -80,7 +81,7 @@ class Converter:
 
         return data
 
-    def convert_text(self, text: str) -> [list, None]:
+    def convert_text(self, text: str):
 
         text = re.sub(r'https://t.co/.{10}', "", text).strip()  # remove links
         text = re.sub(r'@\w+', "", text).strip()  # remove mentions
@@ -124,6 +125,7 @@ class Converter:
     @staticmethod
     def convert_to_geo(value: float, limit: int):
         return (value - 0.5) * 2.0 * float(limit)
+
 
 if __name__ == "__main__":
     converter = Converter(128)
