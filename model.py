@@ -3,7 +3,7 @@ from geopy import distance
 import tensorflow as tf
 
 
-# FIXME implement loss function
+# FIXME implement loss function test
 def geo_distance(point1: tf.Tensor, point2: tf.Tensor):
     # print("POINT1:, ", point1)
     # print("POINT2:, ", point2)
